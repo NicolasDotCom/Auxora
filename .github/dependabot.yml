@@ -1,0 +1,37 @@
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    # El proyecto usa pnpm, no npm.
+    # Este bloque evita el error "Dependencies lock file is not found"
+    # que GitHub Actions muestra por defecto al detectar un package.json
+    # sin package-lock.json / npm-shrinkwrap.json / yarn.lock.
+    ignore:
+      - dependency-name: "*"
+    groups:
+      pnpm-major:
+        dependency-type: "production"
+        update-types:
+          - "major"
+      pnpm-minor:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
+
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
