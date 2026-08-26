@@ -61,10 +61,13 @@ jobs:
       - name: Generate app key
         run: php artisan key:generate --ansi
 
-      - name: Clear config and cache
+      - name: Clear config, cache and views
         run: |
           php artisan config:clear
           php artisan cache:clear || true
+          php artisan view:clear || true
+          mkdir -p storage/framework/views
+          chmod -R 775 storage/framework/views || true
 
       - name: Wait for MySQL
         run: |
