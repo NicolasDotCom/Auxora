@@ -52,13 +52,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-
 
-      - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
-
       - name: Prepare environment
         run: |
-          cp .env.example .env
-          php artisan key:generate
+          cp .env.ci .env
+          php artisan key:generate --ansi
+          php artisan config:clear
+          php artisan cache:clear
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Wait for MySQL
         run: |
@@ -74,15 +76,4 @@ jobs:
         run: pnpm run build
 
       - name: Run tests
-        env:
-          APP_ENV: testing
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: ticket_tes_testing
-          DB_USERNAME: root
-          DB_PASSWORD: root
-          CACHE_STORE: array
-          SESSION_DRIVER: array
-          QUEUE_CONNECTION: sync
         run: php artisan test
