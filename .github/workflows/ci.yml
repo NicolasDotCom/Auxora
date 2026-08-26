@@ -52,15 +52,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-
 
-      - name: Prepare environment
-        run: |
-          cp .env.ci .env
-          php artisan key:generate --ansi
-          php artisan config:clear
-          php artisan cache:clear
+      - name: Copy CI environment file
+        run: cp .env.ci .env
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Generate app key
+        run: php artisan key:generate --ansi
+
+      - name: Clear config and cache
+        run: |
+          php artisan config:clear
+          php artisan cache:clear || true
 
       - name: Wait for MySQL
         run: |
