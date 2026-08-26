@@ -1,1 +1,0 @@
-<?php /**PATH C:\laragon\www\auxora-main\resources\views\tickets\pdf.blade.php ENDPATH**/ ?>

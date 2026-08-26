@@ -1,9 +1,18 @@
-#!/bin/bash
-
-# Hook ejecutado después de cada deployment en Laravel Cloud
-# Esto asegura que el enlace simbólico siempre exista
+#!/bin/sh
+set -e
 
 echo "🔗 Creando enlace simbólico de storage..."
-php artisan storage:link
+php artisan storage:link || true
 
-echo "✅ Deployment completado"
+echo "🗃️  Ejecutando migraciones..."
+php artisan migrate --force --no-interaction
+
+echo "⚡ Refrescando caché..."
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+echo "🔥 Precacheando catálogos críticos..."
+php artisan cache:warmup || true
+
+echo "✅ Post-deploy completado en Coolify"

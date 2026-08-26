@@ -166,7 +166,7 @@ export default function Backups({ backups }: { backups: Backup[] }) {
                     <CardContent className="space-y-2 text-sm">
                         <p><strong>ANTES de hacer push:</strong></p>
                         <ol className="list-decimal list-inside space-y-1 ml-4">
-                            <li>Ejecutar en Laravel Cloud Commands: <code className="bg-gray-100 px-1 rounded">php artisan backup:documents</code></li>
+                            <li>Ejecutar en Coolify (Terminal del contenedor): <code className="bg-gray-100 px-1 rounded">php artisan backup:documents</code></li>
                             <li>Ir a /backup/list y descargar el ZIP</li>
                             <li>Hacer tu push tranquilo</li>
                         </ol>

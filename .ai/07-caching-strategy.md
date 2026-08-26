@@ -7,7 +7,7 @@ Patrón **Cache-Aside centralizado** en `App\Services\CacheService`. Una sola fu
 | Entorno | Driver | Notas |
 |---------|--------|-------|
 | Local (Laragon) | `file` o `redis` | Redis viene con Laragon |
-| Producción (Laravel Cloud) | `redis` (managed) | Compartido entre workers |
+| Producción (Coolify / VPS) | `redis` (servicio gestionado por Coolify) | Compartido entre workers |
 
 ## TTLs
 
@@ -72,7 +72,7 @@ dashboard_stats_{userId}
 technician_ranking_{hash}
 ```
 
-> En Laravel Cloud Redis, las claves tienen prefijo (`CACHE_PREFIX=auxora_`) para evitar colisiones.
+> En Redis (Coolify / VPS), las claves tienen prefijo (`CACHE_PREFIX=auxora_`) para evitar colisiones con otros proyectos del mismo VPS.
 
 ## Patrones de uso
 
@@ -190,7 +190,7 @@ public function share(Request $request): array
 
 ## Configuración
 
-### Producción (Laravel Cloud)
+### Producción (Coolify / VPS propio)
 
 ```env
 CACHE_STORE=redis
@@ -199,7 +199,7 @@ QUEUE_CONNECTION=redis
 CACHE_PREFIX=auxora_
 ```
 
-Laravel Cloud provee `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD` automáticamente.
+Coolify provee `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD` automáticamente si creas el servicio Redis en el mismo Project.
 
 ### Local (Laragon)
 

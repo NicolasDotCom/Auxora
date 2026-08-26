@@ -37,8 +37,8 @@
 | 09 | [09-testing.md](09-testing.md) | Test nuevo |
 | 10 | [10-common-patterns.md](10-common-patterns.md) | Implementar feature estándar |
 | 11 | [11-dos-and-donts.md](11-dos-and-donts.md) | Duda rápida sobre ✅ o ❌ |
-| 12 | [12-deployment-laravel-cloud.md](12-deployment-laravel-cloud.md) | Deploy a Laravel Cloud |
-| 13 | [13-storage-s3-bucket.md](13-storage-s3-bucket.md) | Storage S3 / archivos |
+| 12 | [12-deployment-coolify-vps.md](12-deployment-coolify-vps.md) | Deploy a Coolify / VPS propio |
+| 13 | [13-storage-s3-coolify.md](13-storage-s3-coolify.md) | Storage S3 / MinIO / archivos |
 
 ## Stack
 
@@ -47,9 +47,9 @@
 | Backend | Laravel 12, PHP 8.2+, MySQL |
 | Frontend | React 19, TypeScript 5.7, Inertia.js v2, Vite 6, Tailwind 4 |
 | Auth | Laravel Sanctum (API) + Spatie Permission (RBAC) |
-| DB / Hosting | MySQL + Laravel Cloud (auto-deploy desde Git) |
-| Cache / Sessions / Queues | Redis (managed por Laravel Cloud) |
-| Storage | Bucket S3 (managed por Laravel Cloud, persistente) |
+| DB / Hosting | MySQL 8 sobre VPS orquestado por Coolify (auto-deploy desde Git) |
+| Cache / Sessions / Queues | Redis 7 sobre Coolify |
+| Storage | MinIO (S3 self-hosted) o bucket S3 externo |
 | Mail | Resend / SMTP |
 | Tests | Pest 3 + PHPUnit 11 |
 | Extras | Maatwebsite Excel, DomPDF, Radix UI, TanStack Table, Recharts |
@@ -88,15 +88,15 @@ php artisan backup:documents                   # Backup de documentos
 - [ ] Storage usa `config('filesystems.default')`
 - [ ] TypeScript sin `any`
 - [ ] Tests añadidos/actualizados
-- [ ] Lint y tipos pasan (`npm run lint && npm run types`)
+- [ ] Lint y tipos pasan (`pnpm run lint && pnpm run types`)
 - [ ] Mensaje de commit en conventional format
 
-## Antes de deploy a Laravel Cloud
+## Antes de deploy a Coolify / VPS propio
 
 - [ ] `FILESYSTEM_DISK=s3` en producción
 - [ ] `CACHE_STORE=redis`, `SESSION_DRIVER=redis`, `QUEUE_CONNECTION=redis`
 - [ ] `APP_DEBUG=false`, `APP_URL` apunta al dominio correcto
-- [ ] `npm run build` ejecutado y commiteado
+- [ ] `pnpm run build` ejecutado y commiteado
 
 Post-deploy: `php artisan migrate --force`, `cache:warmup`, `health:check`.
 

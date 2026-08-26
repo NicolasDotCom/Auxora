@@ -1,0 +1,55 @@
+# Configuración de Coolify v4.
+# Esta sección aparece en el panel al crear el Resource a partir del repositorio.
+
+build_pack: dockerfile
+dockerfile_location: /Dockerfile
+port: 8080
+health_check_path: /healthz
+health_check_port: 8080
+
+# Variables de entorno mínimas que el operador debe completar
+# desde el panel antes del primer deploy.
+environment:
+  APP_ENV: production
+  APP_DEBUG: "false"
+  APP_URL: https://auxora.homelabvps.dev
+  APP_LOCALE: es
+  APP_FALLBACK_LOCALE: es
+
+  SESSION_SECURE_COOKIE: "true"
+  SESSION_HTTP_ONLY: "true"
+  SESSION_SAME_SITE: lax
+
+  CACHE_STORE: redis
+  SESSION_DRIVER: redis
+  QUEUE_CONNECTION: redis
+
+  LOG_CHANNEL: stack
+  LOG_LEVEL: error
+
+  MAIL_MAILER: resend
+  RESEND_KEY: ""
+  MAIL_FROM_ADDRESS: noreply@homelabvps.dev
+  MAIL_FROM_NAME: Tickets-App
+
+  FILESYSTEM_DISK: local
+  AWS_ACCESS_KEY_ID: ""
+  AWS_SECRET_ACCESS_KEY: ""
+  AWS_DEFAULT_REGION: us-east-1
+  AWS_BUCKET: ""
+  AWS_ENDPOINT: ""
+  AWS_USE_PATH_STYLE_ENDPOINT: "true"
+
+  DB_MIN_CONNECTIONS: "5"
+  DB_MAX_CONNECTIONS: "100"
+
+# Hooks opcionales. Coolify los invoca automáticamente en el contenedor.
+post_deployment_hooks:
+  - "chmod -R 775 storage bootstrap/cache || true"
+  - "php artisan storage:link || true"
+
+# Dominios. Coolify emite Let's Encrypt automáticamente.
+domains:
+  - host: auxora.homelabvps.dev
+    port: 8080
+    force_https: true

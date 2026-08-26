@@ -8,10 +8,10 @@
 
 Sistema de gestión de tickets de soporte técnico en **Laravel 12 + Inertia.js + React 19 + TypeScript**.
 
-Desplegado en **Laravel Cloud** con:
-- **MySQL** managed (connection pooling)
-- **Redis** managed (cache + sessions + queues)
-- **Bucket S3** managed (storage persistente)
+Desplegado en un **VPS propio orquestado con [Coolify](https://coolify.io/)** con:
+- **MySQL 8** (servicio gestionado por Coolify)
+- **Redis 7** (servicio gestionado por Coolify, cache + sessions + queues)
+- **MinIO** o **S3 externo** (storage persistente)
 
 ---
 
@@ -22,36 +22,41 @@ Backend:    Laravel 12 · PHP 8.2+ · MySQL · Spatie Permission · Sanctum
 Frontend:   React 19 · TypeScript 5.7 · Inertia.js v2 · Vite 6 · Tailwind 4
 UI:         Radix UI · TanStack Table · Recharts · Lucide · Sonner
 Servicios:  CacheService (central) · WorkingDaysHelper · DomPDF · Maatwebsite Excel
-Infra:      Laravel Cloud · Redis · S3
+Infra:      VPS + Coolify · Traefik · Docker
 Testing:    Pest 3 · PHPUnit 11 · Mockery
 ```
 
 ---
 
-## 🌐 Infraestructura (Laravel Cloud)
+## 🌐 Infraestructura (VPS + Coolify)
 
 ```
-┌────────────────────────────────────────────────────────────┐
-│                    LARAVEL CLOUD                           │
-│                                                            │
-│  ┌──────────┐   ┌──────────┐   ┌──────────┐                │
-│  │  MySQL   │   │  Redis   │   │ Bucket S3│                │
-│  │ (managed)│   │ (managed)│   │ (managed)│                │
-│  └────┬─────┘   └────┬─────┘   └────┬─────┘                │
-│       │              │              │                       │
-│       ▼              ▼              ▼                       │
-│  ┌─────────────────────────────────────────────┐           │
-│  │  App (auto-deploy desde Git)                 │           │
-│  │  • Cache: Redis                              │           │
-│  │  • Sessions: Redis                           │           │
-│  │  • Queues: Redis                             │           │
-│  │  • Storage: S3                               │           │
-│  │  • DB Pool: min 5 / max 100                  │           │
-│  └─────────────────────────────────────────────┘           │
-└────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                       VPS (Docker)                          │
+│                                                             │
+│  ┌──────────┐    ┌──────────┐    ┌──────────┐                │
+│  │  MySQL 8 │    │ Redis 7  │    │  MinIO   │                │
+│  │  (Coolify)│   │ (Coolify)│   │ (Coolify)│                │
+│  └────┬─────┘    └────┬─────┘    └────┬─────┘                │
+│       │               │              │                      │
+│       ▼               ▼              ▼                      │
+│  ┌────────────────────────────────────────────┐             │
+│  │  App (Docker, auto-deploy desde Git)        │             │
+│  │  • Cache: Redis                             │             │
+│  │  • Sessions: Redis                          │             │
+│  │  • Queues: Redis                            │             │
+│  │  • Storage: MinIO (S3 compatible)           │             │
+│  │  • DB Pool: min 5 / max 100                 │             │
+│  └────────────────────────────────────────────┘             │
+│                          │                                  │
+│                          ▼                                  │
+│                  ┌──────────────┐                           │
+│                  │   Traefik    │ TLS + Let's Encrypt       │
+│                  └──────────────┘                           │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-📚 Detalles en `12-deployment-laravel-cloud.md` y `13-storage-s3-bucket.md`.
+📚 Detalles en `12-deployment-coolify-vps.md` y `13-storage-s3-coolify.md`.
 
 ---
 
@@ -290,7 +295,7 @@ return (
 | Model | `app/Models/` |
 | Factory | `database/factories/` |
 | Configuración de storage | `config/filesystems.php` (disco `s3`) |
-| **Setup de Laravel Cloud** | **`12-deployment-laravel-cloud.md`** |
+| **Setup de Coolify / VPS** | **`12-deployment-coolify-vps.md`** |
 | **Configuración S3** | **`13-storage-s3-bucket.md`** |
 | Export Excel | `app/Exports/` + `Maatwebsite` |
 | Export PDF | `resources/views/exports/*.blade.php` + DomPDF |
@@ -333,11 +338,11 @@ php artisan queue:failed                       # Ver jobs fallidos
 php artisan queue:retry all                    # Reintentar todos
 
 # Frontend
-npm run dev                                    # Modo desarrollo
-npm run build                                  # Build producción
-npm run lint                                   # ESLint
-npm run types                                  # TypeScript check
-npm run format                                 # Prettier
+pnpm dev                                       # Modo desarrollo
+pnpm run build                                 # Build producción
+pnpm run lint                                  # ESLint
+pnpm run types                                 # TypeScript check
+pnpm run format                                # Prettier
 
 # Testing
 php artisan test                               # Todos
@@ -345,7 +350,7 @@ php artisan test --filter=TicketAuth            # Filtrar
 php artisan test --coverage                    # Cobertura
 ./vendor/bin/pest --filter=Customer            # Alternativa
 
-# Diagnóstico en Laravel Cloud (vía SSH/Console)
+# Diagnóstico en Coolify (vía Terminal del contenedor o SSH al VPS)
 php artisan tinker
 > Redis::ping()                                 # "PONG" = OK
 > Storage::disk('s3')->url('test.txt')          # Verificar S3
@@ -409,21 +414,21 @@ php artisan tinker
 - [ ] Storage usa el disco configurado (`config('filesystems.default')`)
 - [ ] TypeScript sin `any`
 - [ ] Tests añadidos/actualizados
-- [ ] Lint y tipos pasan (`npm run lint && npm run types`)
+- [ ] Lint y tipos pasan (`pnpm run lint && pnpm run types`)
 - [ ] Mensaje de commit en conventional format
 
 ---
 
-## 🚀 Antes de deploy a Laravel Cloud, verifica:
+## 🚀 Antes de deploy a Coolify / VPS, verifica:
 
 - [ ] `.env` de producción tiene `FILESYSTEM_DISK=s3`
 - [ ] `.env` de producción tiene `CACHE_STORE=redis`
 - [ ] `.env` de producción tiene `SESSION_DRIVER=redis`
 - [ ] `.env` de producción tiene `QUEUE_CONNECTION=redis`
 - [ ] `APP_DEBUG=false`
-- [ ] `APP_URL` apunta al dominio de Laravel Cloud
+- [ ] `APP_URL` apunta al dominio del VPS (ej. `https://auxora.homelabvps.dev`)
 - [ ] Migraciones compatibles con MySQL
-- [ ] `npm run build` ejecutado y commiteado
+- [ ] `pnpm run build` ejecutado y commiteado
 
 Post-deploy:
 - [ ] `php artisan migrate --force` se ejecutó OK
@@ -449,13 +454,13 @@ Post-deploy:
 | Tests | `09-testing.md` |
 | Patrones recurrentes | `10-common-patterns.md` |
 | Buenas prácticas | `11-dos-and-donts.md` |
-| **Despliegue Laravel Cloud** | **`12-deployment-laravel-cloud.md`** |
+| **Despliegue Coolify / VPS** | **`12-deployment-coolify-vps.md`** |
 | **Storage S3** | **`13-storage-s3-bucket.md`** |
 | Ejemplos completos | `EXAMPLES.md` |
 
 ---
 
 **Versión**: 1.1  
-**Hosting**: Laravel Cloud  
+**Hosting**: VPS propio orquestado con Coolify  
 **Stack**: MySQL + Redis + S3 (todo managed)  
 **Última actualización**: Enero 2026

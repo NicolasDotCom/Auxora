@@ -2,17 +2,30 @@
 
 ## Problema: archivos efímeros
 
-En producción (Laravel Cloud, Heroku, etc.) el sistema de archivos local es **efímero**: los archivos subidos se eliminan tras redeploys. **Solución:** almacenamiento en la nube.
+En producción con contenedores Docker (Coolify, ECS, Heroku, etc.) el sistema de archivos local es **efímero**: los archivos subidos se eliminan tras redeploys o al recrear el contenedor. **Solución:** almacenamiento en la nube o volumen persistente.
 
-## Laravel Cloud (recomendado)
+## Opciones recomendadas para VPS con Coolify
 
-Laravel Cloud incluye S3 integrado. Solo configurar una variable:
+### MinIO (S3 self-hosted, recomendado)
+
+Coolify ofrece MinIO como recurso de un click. Configuración:
 
 ```env
 FILESYSTEM_DISK=s3
+AWS_ACCESS_KEY_ID=<provisto por Coolify>
+AWS_SECRET_ACCESS_KEY=<provisto por Coolify>
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=tickets
+AWS_ENDPOINT=http://minio:9000
+AWS_URL=https://auxora.homelabvps.dev
+AWS_USE_PATH_STYLE_ENDPOINT=true
 ```
 
-Laravel Cloud gestiona bucket, credenciales, región y URLs automáticamente. No requiere configuración manual.
+Coolify gestiona el acceso interno entre contenedores y la persistencia del bucket en un volumen Docker.
+
+### S3 externo o compatible
+
+Si prefieres usar un bucket externo (Amazon S3, Cloudflare R2, DigitalOcean Spaces), configura las variables en Coolify → Environment Variables. El servidor hace las peticiones a través del endpoint público, lo que añade latencia pero desacopla el almacenamiento del VPS.
 
 ## Proveedores alternativos
 
@@ -147,7 +160,7 @@ Configurar CORS en el bucket:
 [{
     "AllowedHeaders": ["*"],
     "AllowedMethods": ["GET", "HEAD"],
-    "AllowedOrigins": ["https://tu-dominio.com"],
+    "AllowedOrigins": ["https://homelabvps.dev"],
     "ExposeHeaders": []
 }]
 ```
@@ -159,7 +172,8 @@ Configurar CORS en el bucket:
 | Amazon S3 | ~$0.023/GB/mes | Popular, integra con CloudFront |
 | DigitalOcean Spaces | $5/mes (250GB) | Precio fijo |
 | Cloudflare R2 | $0.015/GB | Transferencia gratis |
-| Laravel Cloud | Incluido | Sin gestión manual |
+| Coolify + MinIO | Incluido en el VPS | Persistente, sin coste extra |
+| Coolify + S3 externo | Coste del proveedor | Desacoplado del VPS |
 
 ## Backup
 

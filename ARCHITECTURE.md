@@ -917,7 +917,7 @@ php artisan route:list
 php artisan role:list --permissions
 
 # Recompilación de assets
-npm run build
+pnpm run build
 ```
 
 ### Testing

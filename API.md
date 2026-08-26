@@ -20,7 +20,7 @@ No permite crear, editar ni eliminar informacion.
 
 ## 3. URL base
 
-- Base produccion: https://tickets-app-main-dbvpcm.laravel.cloud/api/v1
+- Base produccion: https://auxora.homelabvps.dev/api/v1
 - Base local: http://localhost:8000/api/v1
 - En este proyecto tambien puedes verlo dinamico desde la demo en /api-demo/tickets.
 

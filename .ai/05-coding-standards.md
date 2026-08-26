@@ -337,8 +337,8 @@ chore: actualizar dependencias de npm
 ./vendor/bin/pint --test       # Solo verificar
 
 # Frontend
-npm run lint                   # ESLint
-npm run lint -- --fix          # Auto-fix
-npm run format                 # Prettier
-npm run types                  # TypeScript check
+pnpm run lint                  # ESLint
+pnpm run lint -- --fix         # Auto-fix
+pnpm run format                # Prettier
+pnpm run types                 # TypeScript check
 ```

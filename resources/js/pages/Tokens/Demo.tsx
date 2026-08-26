@@ -149,7 +149,7 @@ export default function TicketsApiDemo() {
                         <CardTitle>Ejecutar request</CardTitle>
                         <CardDescription className="space-y-1">
                             <p className="break-all">Base URL: {apiBaseUrl}</p>
-                            <p className="break-all">Base URL Produccion: https://tickets-app-main-dbvpcm.laravel.cloud/api/v1</p>
+                            <p className="break-all">Base URL Produccion: https://auxora.homelabvps.dev/api/v1</p>
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">

@@ -133,18 +133,23 @@ Laravel (route api.php) → Sanctum middleware → Controller API
 ```
 Developer → git push origin main
    ↓
-Laravel Cloud (webhook)
+Coolify (webhook) recibe push
+   ↓
+Coolify construye imagen Docker:
    ├── composer install --no-dev --optimize-autoloader
-   ├── npm ci && npm run build
+   ├── corepack enable
+   ├── pnpm install --frozen-lockfile && pnpm run build
+   ↓
+Post-deploy hooks dentro del contenedor:
    ├── config:cache + route:cache + view:cache
    ├── migrate --force
    ↓
-Swap zero-downtime
+Traefik hace swap zero-downtime
    ↓
-Production: App ↔ MySQL managed · Cache + Sessions + Queues ↔ Redis · Files ↔ S3
+Production: App ↔ MySQL · Cache + Sessions + Queues ↔ Redis · Files ↔ MinIO/S3
 ```
 
-Detalle completo en [12-deployment-laravel-cloud.md](12-deployment-laravel-cloud.md) y [`../DEPLOYMENT.md`](../DEPLOYMENT.md).
+Detalle completo en [12-deployment-coolify-vps.md](12-deployment-coolify-vps.md) y [`../DEPLOYMENT.md`](../DEPLOYMENT.md).
 
 ## Testabilidad
 

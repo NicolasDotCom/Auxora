@@ -87,9 +87,9 @@ AWS_SECRET_ACCESS_KEY=xxxxx
 AWS_DEFAULT_REGION=us-east-1
 ```
 
-## Despliegue en Laravel Cloud
+## Despliegue en Coolify / VPS propio
 
-En **Settings → Environment Variables**:
+En el panel de Coolify → **Service → Environment Variables**:
 
 | Variable | Valor |
 |----------|-------|
@@ -98,7 +98,7 @@ En **Settings → Environment Variables**:
 | `MAIL_FROM_ADDRESS` | `auxora.support@gmail.com` |
 | `MAIL_FROM_NAME` | `Tickets-App` |
 
-Luego forzar redeploy y ejecutar:
+Tras guardar las variables, redeploy y ejecutar dentro del contenedor:
 
 ```bash
 php artisan config:clear
@@ -119,12 +119,12 @@ https://resend.com/emails                          # Dashboard de Resend
 
 ### Email no llega
 1. Revisar spam
-2. Verificar variables en Laravel Cloud
+2. Verificar variables en el panel de Coolify (Service → Environment Variables)
 3. `php artisan config:clear`
-4. Revisar logs: `php artisan tail` o Dashboard → Logs
+4. Revisar logs del contenedor o `storage/logs/laravel.log`
 
 ### "RESEND_KEY not set"
-Falta la variable en Laravel Cloud (no solo en `.env` local).
+Falta la variable en Coolify (no solo en `.env` local).
 
 ### "The gmail.com domain is not verified"
 Resend no permite enviar desde `@gmail.com` sin verificar. Opciones:

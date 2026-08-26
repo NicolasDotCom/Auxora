@@ -5,9 +5,9 @@
 
 ---
 
-## 🪣 Ejemplo 0: Subir y Gestionar Archivos en S3 (Laravel Cloud)
+## 🪣 Ejemplo 0: Subir y Gestionar Archivos en MinIO / S3 (Coolify / VPS)
 
-Como el proyecto corre en Laravel Cloud con bucket S3, **todos los archivos deben subirse a S3** (no disco local en producción).
+Como el proyecto corre en un VPS orquestado por Coolify con MinIO (o un bucket S3 externo), **todos los archivos deben subirse al disco configurado** (`config('filesystems.default')`).
 
 ### Controller con Subida Múltiple a S3
 
@@ -44,7 +44,7 @@ class TicketDocumentController extends Controller
                 // ✅ Nombre único para evitar colisiones en S3
                 $uniqueName = Str::uuid() . '-' . $file->getClientOriginalName();
 
-                // ✅ Subir a S3 (Laravel Cloud)
+                // ✅ Subir al disco configurado (MinIO / S3 / local en dev)
                 $path = $file->storeAs(
                     "ticket-documents/{$ticket->id}",
                     $uniqueName,
@@ -199,7 +199,7 @@ export function TicketUpload({ ticketId }: { ticketId: number }) {
 ### Comandos Post-Deploy para Storage
 
 ```bash
-# Después de cada deploy a Laravel Cloud:
+# Después de cada deploy a Coolify / VPS:
 
 # 1. Si acabas de activar S3 y tienes archivos en local
 php artisan files:migrate-to-s3 --dry-run    # Simular primero
