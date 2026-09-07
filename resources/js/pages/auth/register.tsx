@@ -1,5 +1,5 @@
-import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
+import { Head, useForm, usePage } from '@inertiajs/react';
+import { AlertTriangle, LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
 import InputError from '@/components/input-error';
@@ -11,14 +11,23 @@ type RegisterForm = {
     email: string;
     password: string;
     password_confirmation: string;
+    website: string;
 };
 
+interface PageProps {
+    demoMode?: boolean;
+}
+
 export default function Register() {
+    const { props } = usePage<PageProps>();
+    const demoMode = props.demoMode ?? false;
+
     const { data, setData, post, processing, errors, reset } = useForm<Required<RegisterForm>>({
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
+        website: '',
     });
 
     const submit: FormEventHandler = (e) => {
@@ -29,8 +38,20 @@ export default function Register() {
     };
 
     return (
-        <RegisterLayout title="Crear una cuenta" description="Enter your details below to create your account">
+        <RegisterLayout title="Crear una cuenta" description="Introduce tus datos para registrarte">
             <Head title="Registrarse" />
+
+            {demoMode && (
+                <div
+                    role="alert"
+                    className="mb-4 flex items-start gap-2 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-xs text-amber-100"
+                >
+                    <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+                    <span>
+                        Modo demo: tu cuenta se borrará en el próximo reset diario. Máximo 5 tickets por usuario.
+                    </span>
+                </div>
+            )}
 
             <form className="space-y-5 sm:space-y-6" onSubmit={submit}>
                 <div className="space-y-4">
@@ -111,10 +132,24 @@ export default function Register() {
                         <InputError message={errors.password_confirmation} />
                     </div>
 
-                    <button 
-                        type="submit" 
-                        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:opacity-50 text-white font-medium py-2.5 sm:py-3 rounded-md transition-colors duration-200 flex items-center justify-center gap-2 text-sm sm:text-base mt-6" 
-                        tabIndex={5} 
+                    {/* Honeypot anti-bot: oculto al usuario, visible para bots */}
+                    <div aria-hidden="true" style={{ position: 'absolute', left: '-10000px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}>
+                        <label htmlFor="website">Website</label>
+                        <input
+                            id="website"
+                            type="text"
+                            name="website"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            value={data.website}
+                            onChange={(e) => setData('website', e.target.value)}
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:opacity-50 text-white font-medium py-2.5 sm:py-3 rounded-md transition-colors duration-200 flex items-center justify-center gap-2 text-sm sm:text-base mt-6"
+                        tabIndex={5}
                         disabled={processing}
                     >
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
@@ -126,8 +161,8 @@ export default function Register() {
                     <span className="text-gray-400">
                         ¿Ya tienes una cuenta?{' '}
                     </span>
-                    <TextLink 
-                        href={route('login')} 
+                    <TextLink
+                        href={route('login')}
                         className="text-blue-500 hover:text-blue-400 transition-colors"
                         tabIndex={6}
                     >

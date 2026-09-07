@@ -123,4 +123,23 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Demo Mode
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, Auxora behaves as a public sandbox suitable for portfolio
+    | demos: a landing page with 1-click role-based login, a persistent banner,
+    | public registration with rate limiting, and nightly data resets.
+    |
+    */
+
+    'demo' => [
+        'enabled' => (bool) env('APP_DEMO', false),
+        'banner' => env('APP_DEMO_BANNER', 'Entorno demo — los datos se reinician cada noche.'),
+        'public_registration' => (bool) env('APP_DEMO_PUBLIC_REGISTRATION', true),
+        'max_tickets_per_user' => (int) env('APP_DEMO_MAX_TICKETS_PER_USER', 5),
+        'reset_hour' => (int) env('APP_DEMO_RESET_HOUR', 3),
+    ],
+
 ];

@@ -25,3 +25,20 @@ if (app()->environment(['production', 'staging'])) {
         ->withoutOverlapping()
         ->runInBackground();
 }
+
+// Reset diario del demo (solo si APP_DEMO=true)
+if (config('app.demo.enabled')) {
+    $resetHour = (int) config('app.demo.reset_hour', 3);
+
+    Schedule::command('demo:reset --force')
+        ->dailyAt(sprintf('%02d:00', $resetHour))
+        ->name('demo-reset-db')
+        ->withoutOverlapping()
+        ->runInBackground();
+
+    Schedule::command('demo:clean-storage')
+        ->dailyAt(sprintf('%02d:15', min($resetHour + 1, 23)))
+        ->name('demo-clean-storage')
+        ->withoutOverlapping()
+        ->runInBackground();
+}

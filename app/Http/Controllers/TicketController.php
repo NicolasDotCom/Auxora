@@ -240,13 +240,25 @@ class TicketController extends Controller
         $userId = Auth::id();
         $user = User::find($userId);
 
+        // Límite demo: usuarios customer no pueden crear más de N tickets
+        // (evita abuso del registro público).
+        if (\App\Helpers\DemoHelper::isEnabled() && $user && $user->hasRole('customer')) {
+            $maxTickets = \App\Helpers\DemoHelper::maxTicketsPerUser();
+            $currentCount = Ticket::where('user_id', $userId)->count();
+            if ($currentCount >= $maxTickets) {
+                return redirect()
+                    ->back()
+                    ->with('error', "Has alcanzado el límite de {$maxTickets} tickets en el demo. Espera al reset diario o contacta al admin.");
+            }
+        }
+
         // Si el usuario es cliente, verificar que solo cree tickets para él mismo
         if ($user && $user->hasRole('customer')) {
             $customer = Customer::where('email', $user->email)->first();
             if (!$customer) {
                 return redirect()->back()->with('error', 'No tienes un perfil de cliente asociado.');
             }
-            
+
             // Verificar que el customer_id enviado corresponda al cliente autenticado
             if ($request->customer_id != $customer->id) {
                 return redirect()->back()->with('error', 'No puedes crear tickets para otros clientes.');

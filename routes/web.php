@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiTicketsDemoController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DemoController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\PendingPartController;
 use App\Http\Controllers\RoleController;
@@ -17,9 +18,21 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
+// Landing pública: siempre va a /welcome. En modo demo muestra 1-click
+// login + registro público; sin modo demo, muestra solo el login clásico.
 Route::get('/', function () {
-    return redirect()->route('login');
+    return redirect()->route('demo.welcome');
 })->name('home');
+
+// /welcome es siempre accesible (renderiza distinto según APP_DEMO).
+Route::get('/welcome', [DemoController::class, 'welcome'])->name('demo.welcome');
+
+// 1-click demo login: SOLO accesible cuando APP_DEMO=true (seguridad).
+Route::middleware('demo')->group(function () {
+    Route::get('/demo/login/{role}', [DemoController::class, 'loginAs'])
+        ->where('role', 'admin|Coordinador|support|customer')
+        ->name('demo.login-as');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Rutas accesibles para todos los usuarios autenticados
@@ -219,10 +232,20 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function (){
     Route::resource('users', UserController::class);
     Route::post('/users/{user}/verify', [UserController::class, 'verifyUser'])->name('users.verify');
 
-    // Registro habilitado solo para admin
-    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('/register', [RegisteredUserController::class, 'store']);
+    // Registro habilitado solo para admin (modo normal)
+    if (! config('app.demo.enabled')) {
+        Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+        Route::post('/register', [RegisteredUserController::class, 'store']);
+    }
 });
+
+// Registro público en modo demo: rate limit 3 por IP/hora + honeypot en el form
+if (config('app.demo.enabled')) {
+    Route::middleware('throttle:3,60')->group(function () {
+        Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+        Route::post('/register', [RegisteredUserController::class, 'store']);
+    });
+}
 
 
 require __DIR__.'/settings.php';

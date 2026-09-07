@@ -14,6 +14,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Modo demo: sembrar los 4 usuarios demo + datos realistas.
+        if (config('app.demo.enabled')) {
+            $this->call(DemoDataSeeder::class);
+            return;
+        }
+
         \App\Models\Customer::factory(10)->create();
         \App\Models\Support::factory(5)->create();
         \App\Models\Ticket::factory(15)->create();

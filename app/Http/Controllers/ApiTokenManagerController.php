@@ -53,6 +53,12 @@ class ApiTokenManagerController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        // Bloqueo de demo: no permitir crear tokens API en el demo público.
+        // Evita que un visitante abuse del rate-limit Sanctum (90 req/min por token).
+        if (\App\Helpers\DemoHelper::isEnabled()) {
+            abort(403, 'La creación de tokens API está deshabilitada en el modo demo.');
+        }
+
         $isAdmin = $request->user()?->hasRole('admin') ?? false;
 
         $validated = $request->validate([

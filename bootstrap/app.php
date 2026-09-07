@@ -22,6 +22,10 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
+
+        $middleware->alias([
+            'demo' => \App\Http\Middleware\EnsureDemoModeEnabled::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

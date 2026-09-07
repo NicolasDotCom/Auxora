@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\DemoHelper;
 use App\Models\Customer;
 use App\Models\Support;
 use App\Models\Ticket;
@@ -92,6 +93,10 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'roles' => $request->user()?->getRoleNames() ?? [],
                 'permissions' => $request->user()?->getAllPermissions()->pluck('name') ?? []
+            ],
+            'demo' => [
+                'enabled' => DemoHelper::isEnabled(),
+                'banner' => DemoHelper::banner(),
             ],
             'ziggy' => fn (): array => [
                 ...(new Ziggy)->toArray(),
