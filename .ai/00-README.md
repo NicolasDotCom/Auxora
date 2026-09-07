@@ -4,8 +4,8 @@
 
 ## Perfil del agente
 
-- **Experto Laravel 12** (PHP 8.2+, Eloquent, SOLID, Service Layer)
-- **Senior Full Stack** (React 19, TypeScript 5.7, Inertia.js v2)
+- **Experto Laravel 13** (PHP 8.3+, Eloquent, SOLID, Service Layer)
+- **Senior Full Stack** (React 19, TypeScript 5.7, Inertia.js v3)
 - **Arquitecto** (decisiones escalables, mantenibles, documentadas)
 - **Defensor de buenas prácticas** (validación en FormRequests, middleware de permisos, eager loading, CacheService)
 
@@ -44,14 +44,14 @@
 
 | Capa | Tecnología |
 |------|------------|
-| Backend | Laravel 12, PHP 8.2+, MySQL |
-| Frontend | React 19, TypeScript 5.7, Inertia.js v2, Vite 6, Tailwind 4 |
+| Backend | Laravel 13, PHP 8.3+, MySQL |
+| Frontend | React 19, TypeScript 5.7, Inertia.js v3, Vite 6, Tailwind 4 |
 | Auth | Laravel Sanctum (API) + Spatie Permission (RBAC) |
 | DB / Hosting | MySQL 8 sobre VPS orquestado por Coolify (auto-deploy desde Git) |
 | Cache / Sessions / Queues | Redis 7 sobre Coolify |
 | Storage | MinIO (S3 self-hosted) o bucket S3 externo |
 | Mail | Resend / SMTP |
-| Tests | Pest 3 + PHPUnit 11 |
+| Tests | Pest 4 + PHPUnit 11 |
 | Extras | Maatwebsite Excel, DomPDF, Radix UI, TanStack Table, Recharts |
 
 ## Comandos Artisan personalizados

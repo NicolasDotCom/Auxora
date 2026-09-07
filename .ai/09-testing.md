@@ -2,7 +2,7 @@
 
 ## 🎯 Stack de Testing
 
-- **[Pest 3](https://pestphp.com/)** — Framework principal (sintaxis elegante sobre PHPUnit).
+- **[Pest 4](https://pestphp.com/)** — Framework principal (sintaxis elegante sobre PHPUnit).
 - **PHPUnit 11** — Base.
 - **Mockery** — Para mocks de clases.
 - **FakerPHP** — Generación de datos fake.

@@ -1,12 +1,12 @@
 # Sistema de Tickets — Auxora
 
-Aplicación de gestión de tickets de soporte técnico construida con **Laravel 12**, **Inertia.js** y **React 19**.
+Aplicación de gestión de tickets de soporte técnico construida con **Laravel 13**, **Inertia.js** y **React 19**.
 
 **Producción:** *pendiente de despliegue en VPS propio (Coolify)*
 
-![Laravel 12](https://img.shields.io/badge/Laravel-12-FF2D20?logo=laravel&logoColor=white)
+![Laravel 13](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white)
 ![React 19](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)
-![PHP 8.2+](https://img.shields.io/badge/PHP-8.2%2B-777BB4?logo=php&logoColor=white)
+![PHP 8.3+](https://img.shields.io/badge/PHP-8.3%2B-777BB4?logo=php&logoColor=white)
 ![pnpm](https://img.shields.io/badge/pnpm-9%2B-F69220?logo=pnpm&logoColor=white)
 ![License](https://img.shields.io/badge/license-Proprietary-blue)
 
@@ -30,7 +30,7 @@ Aplicación de gestión de tickets de soporte técnico construida con **Laravel 
 ## Stack
 
 ### Backend
-- Laravel 12 sobre PHP 8.2+
+- Laravel 13 sobre PHP 8.3+
 - MySQL / MariaDB
 - [Spatie Laravel Permission](https://spatie.be/docs/laravel-permission) — sistema de roles y permisos
 
@@ -71,7 +71,7 @@ Los roles se gestionan con permisos granulares (`view ticket`, `edit ticket`, `v
 
 | Herramienta | Versión recomendada | Notas |
 |-------------|----------------------|-------|
-| PHP | 8.2+ | Extensiones: `intl`, `pdo_mysql`, `mbstring`, `gd`, `zip`, `openssl`, `bcmath` |
+| PHP | 8.3+ | Extensiones: `intl`, `pdo_mysql`, `mbstring`, `gd`, `zip`, `openssl`, `bcmath` |
 | Composer | 2.x | — |
 | Node.js | 20 LTS o superior | Requerido por Vite 6 y Tailwind 4 |
 | pnpm | 9+ | `npm install -g pnpm` |

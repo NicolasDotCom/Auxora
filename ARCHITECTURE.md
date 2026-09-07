@@ -17,7 +17,7 @@
 
 ## 📖 Descripción General
 
-Sistema de gestión de tickets de soporte técnico desarrollado con **Laravel 12** (backend), **Inertia.js** (bridge) y **React 19** (frontend). Permite la gestión completa del ciclo de vida de tickets, con sistema de roles dinámico, seguimiento de repuestos pendientes, comentarios con adjuntos, y generación de reportes.
+Sistema de gestión de tickets de soporte técnico desarrollado con **Laravel 13** (backend), **Inertia.js** (bridge) y **React 19** (frontend). Permite la gestión completa del ciclo de vida de tickets, con sistema de roles dinámico, seguimiento de repuestos pendientes, comentarios con adjuntos, y generación de reportes.
 
 ### Casos de Uso Principales
 - **Clientes**: Crear tickets, hacer seguimiento de sus solicitudes
@@ -31,8 +31,8 @@ Sistema de gestión de tickets de soporte técnico desarrollado con **Laravel 12
 ## 🛠️ Stack Tecnológico
 
 ### Backend
-- **Laravel 12** - Framework PHP
-- **PHP 8.2+** - Lenguaje de programación
+- **Laravel 13** - Framework PHP
+- **PHP 8.3+** - Lenguaje de programación
 - **MySQL/MariaDB** - Base de datos
 - **Spatie Laravel Permission** - Sistema de roles y permisos
 
@@ -54,7 +54,7 @@ Sistema de gestión de tickets de soporte técnico desarrollado con **Laravel 12
 ## 📁 Estructura de Carpetas
 
 ```
-ticket_tes/
+auxora-main/
 │
 ├── app/
 │   ├── Console/Commands/          # Comandos Artisan personalizados
@@ -944,4 +944,4 @@ php artisan test --coverage
 ---
 
 **Última actualización**: 21 de enero de 2026
-**Versión del proyecto**: Laravel 12 + React 19
+**Versión del proyecto**: Laravel 13 + React 19

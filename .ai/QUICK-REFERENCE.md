@@ -6,7 +6,7 @@
 
 ## 🎟️ ¿Qué es?
 
-Sistema de gestión de tickets de soporte técnico en **Laravel 12 + Inertia.js + React 19 + TypeScript**.
+Sistema de gestión de tickets de soporte técnico en **Laravel 13 + Inertia.js 3 + React 19 + TypeScript**.
 
 Desplegado en un **VPS propio orquestado con [Coolify](https://coolify.io/)** con:
 - **MySQL 8** (servicio gestionado por Coolify)
@@ -18,12 +18,12 @@ Desplegado en un **VPS propio orquestado con [Coolify](https://coolify.io/)** co
 ## 🏗️ Stack en 30 segundos
 
 ```
-Backend:    Laravel 12 · PHP 8.2+ · MySQL · Spatie Permission · Sanctum
-Frontend:   React 19 · TypeScript 5.7 · Inertia.js v2 · Vite 6 · Tailwind 4
+Backend:    Laravel 13 · PHP 8.3+ · MySQL · Spatie Permission · Sanctum
+Frontend:   React 19 · TypeScript 5.7 · Inertia.js v3 · Vite 6 · Tailwind 4
 UI:         Radix UI · TanStack Table · Recharts · Lucide · Sonner
 Servicios:  CacheService (central) · WorkingDaysHelper · DomPDF · Maatwebsite Excel
 Infra:      VPS + Coolify · Traefik · Docker
-Testing:    Pest 3 · PHPUnit 11 · Mockery
+Testing:    Pest 4 · PHPUnit 11 · Mockery
 ```
 
 ---

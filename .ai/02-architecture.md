@@ -2,16 +2,16 @@
 
 ## Visión
 
-**Monolito modular** sobre Laravel 12 con frontend SPA vía Inertia.js (sin API REST tradicional). Complementado con API REST + Sanctum para integraciones externas.
+**Monolito modular** sobre Laravel 13 con frontend SPA vía Inertia.js (sin API REST tradicional). Complementado con API REST + Sanctum para integraciones externas.
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
 │                  FRONTEND (React 19 + TS)                     │
 │  Pages ─► Components ─► Hooks ─► UI Lib (Radix + Tailwind)    │
 └───────────────────────┬──────────────────────────────────────┘
-                        │ Inertia.js v2 (SPA bridge)
+                        │ Inertia.js v3 (SPA bridge)
 ┌───────────────────────┼──────────────────────────────────────┐
-│                       ▼            BACKEND (Laravel 12)      │
+│                       ▼            BACKEND (Laravel 13)      │
 │  Routes (web.php, api.php)                                    │
 │       │                                                       │
 │  Middleware: auth, verified, role:X, permission:Y            │
@@ -121,7 +121,7 @@ Laravel (route api.php) → Sanctum middleware → Controller API
 
 | ADR | Decisión | Consecuencia |
 |-----|----------|--------------|
-| 001 | Inertia.js v2 + React | DX simplificado, validación server-side reusada |
+| 001 | Inertia.js v3 + React | DX simplificado, validación server-side reusada |
 | 002 | Spatie Permission sobre Gate | Comandos `role:*`, middleware `permission:X` |
 | 003 | CacheService centralizado | Una sola fuente de verdad, fácil invalidación |
 | 004 | WorkingDaysHelper para SLA | Cálculo preciso con tabla `holidays` |
