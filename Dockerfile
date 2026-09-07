@@ -19,11 +19,12 @@ WORKDIR /app
 COPY composer.json composer.lock ./
 RUN composer install \
         --no-dev \
-        --ignore-platform-req=ext-bcmath \
         --no-interaction \
         --no-progress \
         --prefer-dist \
-        --optimize-autoloader
+        --optimize-autoloader \
+        --no-scripts \
+        --ignore-platform-req=ext-bcmath
 
 # ---------- Stage 3: runtime ----------
 FROM php:8.3-fpm-bookworm AS runtime
