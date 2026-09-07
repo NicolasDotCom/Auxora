@@ -8,20 +8,15 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         // Forzar HTTPS en producción (detrás de Traefik como reverse proxy)
@@ -29,10 +24,8 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        // Set PHP timezone
         date_default_timezone_set(config('app.timezone'));
 
-        // Configurar rate limiting más agresivo para API
         RateLimiter::for('api-tickets', function (Request $request) {
             $tokenId = $request->user()?->currentAccessToken()?->id;
             $identifier = $tokenId
@@ -48,20 +41,17 @@ class AppServiceProvider extends ServiceProvider
                 });
         });
 
-        // Rate limiting para login (más restrictivo para seguridad)
         RateLimiter::for('login', function (Request $request) {
             return Limit::perMinute(5)->by($request->email);
         });
 
-        // Rate limiting general para todas las rutas web
         RateLimiter::for('default', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
-        // Monitorear queries lentas en desarrollo
         if (config('app.debug')) {
             DB::listen(function ($query) {
-                if ($query->time > 500) { // Query > 500ms
+                if ($query->time > 500) {
                     Log::warning('Slow query detected', [
                         'query' => $query->sql,
                         'time' => $query->time . 'ms',
@@ -70,8 +60,5 @@ class AppServiceProvider extends ServiceProvider
                 }
             });
         }
-        if ($this->app->environment('production')) {\Illuminate\Support\Facades\URL::forceScheme('https');
-}
-
     }
 }
