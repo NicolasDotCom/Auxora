@@ -19,6 +19,7 @@ WORKDIR /app
 COPY composer.json composer.lock ./
 RUN composer install \
         --no-dev \
+        --ignore-platform-req=ext-bcmath \
         --no-interaction \
         --no-progress \
         --prefer-dist \
