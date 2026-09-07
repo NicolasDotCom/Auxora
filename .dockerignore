@@ -22,7 +22,6 @@ public/build
 .gitignore
 coolify.yml
 docker-compose*.yml
-docker
 tests
 phpunit.xml
 phpunit.xml.dist
