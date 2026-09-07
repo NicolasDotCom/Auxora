@@ -24,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Forzar HTTPS en producción (detrás de Traefik como reverse proxy)
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
+
         // Set PHP timezone
         date_default_timezone_set(config('app.timezone'));
 
@@ -65,6 +70,8 @@ class AppServiceProvider extends ServiceProvider
                 }
             });
         }
+        if ($this->app->environment('production')) {\Illuminate\Support\Facades\URL::forceScheme('https');
+}
 
     }
 }
